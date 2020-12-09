@@ -3,9 +3,10 @@
 INPUTS=$(xinput list | grep -i wacom |perl -ne 'while (m/id=(\d+)/g){print "$1\n";}');
 DISPLAYS=$(xrandr | grep 'connected' | cut -d " " -f 1);
 
+# DISPLAY_WACOM=${WACOM_DISPLAY:=$(echo $DISPLAYS | cut -d " " -f 1)};
 CONFIG_FILE=~/.wacom/.config;
 if [ ! -f "$CONFIG_FILE" ]; then
-	DISPLAY_WACOM="$(echo "$DISPLAYS" | cut -d " " -f 1)";
+	DISPLAY_WACOM="$(echo $DISPLAYS | cut -d " " -f 1)";
 else
 	DISPLAY_WACOM="$(cat "${CONFIG_FILE}")";
 
@@ -26,7 +27,7 @@ else
 
 	if [ 2 -ne $disp ]
 	then
-		DISPLAY_WACOM="$(echo "$DISPLAYS" | cut -d " " -f 1)";
+		DISPLAY_WACOM="$(echo $DISPLAYS | cut -d " " -f 1)";
 	fi
 fi
 
@@ -36,5 +37,5 @@ do
 	xsetwacom set "${id}" MapToOutput "${DISPLAY_WACOM}";
 done
 
-echo "$DISPLAY_WACOM" > "${CONFIG_FILE}";
+echo $DISPLAY_WACOM > "${CONFIG_FILE}";
 
